@@ -29,7 +29,7 @@ describe('/threads endpoint', () => {
     await ThreadsTableTestHelper.cleanTable();
   });
 
-  describe('when POST /users', () => {
+  describe('when POST /threads', () => {
     it('should response 201 and persisted thread', async () => {
       // Arrange
       const requestPayload = {
