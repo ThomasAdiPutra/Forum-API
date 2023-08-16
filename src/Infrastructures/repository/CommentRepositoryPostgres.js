@@ -23,7 +23,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     return new AddedComment({ ...result.rows[0] });
   }
 
-  async getCommentsBythreadId(thread_id) {
+  async getCommentsByThreadId(thread_id) {
     const query = {
       text: 'SELECT * FROM comments WHERE thread_id = $1',
       values: [thread_id],

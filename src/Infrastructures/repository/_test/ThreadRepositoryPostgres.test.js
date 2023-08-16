@@ -31,7 +31,7 @@ describe('ThreadRepositoryPostgres', () => {
       });
       const fakeIdGenerator = () => '123'; // stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
-      
+
       // Action
       await threadRepositoryPostgres.addThread(addThread);
 
@@ -76,14 +76,16 @@ describe('ThreadRepositoryPostgres', () => {
 
     it('should return thread id correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-321', owner: 'user-123', title: 'Dicoding', body: 'Dicoding Indonesia' });
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-321', owner: 'user-123', title: 'Dicoding', body: 'Dicoding Indonesia',
+      });
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action
-      const { id: thread_id } = await threadRepositoryPostgres.getThreadById('thread-321');
+      const { id: threadId } = await threadRepositoryPostgres.getThreadById('thread-321');
 
       // Assert
-      expect(thread_id).toEqual('thread-321');
+      expect(threadId).toEqual('thread-321');
     });
   });
 
