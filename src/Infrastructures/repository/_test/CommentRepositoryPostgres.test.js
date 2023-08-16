@@ -54,10 +54,10 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      const addedThread = await commentRepositoryPostgres.addComment(addComment);
+      const addedComment = await commentRepositoryPostgres.addComment(addComment);
 
       // Assert
-      expect(addedThread).toStrictEqual(new AddedComment({
+      expect(addedComment).toStrictEqual(new AddedComment({
         id: 'comment-123',
         thread_id: 'thread-123',
         owner: 'user-123',
