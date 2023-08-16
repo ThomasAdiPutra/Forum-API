@@ -1,11 +1,16 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 const DetailComment = require('../../Domains/comments/entities/DetailComment');
+const DetailReply = require('../../Domains/replies/entities/DetailReply');
 const DetailThread = require('../../Domains/threads/entities/DetailThread');
 
 class GetDetailThreadUseCase {
-  constructor({ threadRepository, commentRepository, userRepository }) {
+  constructor({
+    threadRepository, commentRepository, replyRepository, userRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
+    this._replyRepository = replyRepository;
     this._userRepository = userRepository;
   }
 
@@ -17,13 +22,25 @@ class GetDetailThreadUseCase {
     const newComments = [];
 
     thread = new DetailThread(thread);
-    for (const comment of comments) {
+    for (let comment of comments) {
       if (comment.deleted_at) {
         comment.content = '**komentar telah dihapus**';
       }
-      // eslint-disable-next-line no-await-in-loop
       comment.username = await this._userRepository.getUsernameById(comment.owner);
-      newComments.push(new DetailComment(comment));
+      comment = new DetailComment(comment);
+      const replies = await this._replyRepository.getRepliesByCommentId(comment.id);
+      const newReplies = [];
+      for (let reply of replies) {
+        if (reply.deleted_at) {
+          reply.content = '**balasan telah dihapus**';
+        }
+        reply.username = await this._userRepository.getUsernameById(reply.owner);
+        reply = new DetailReply(reply);
+        newReplies.push(reply);
+      }
+
+      comment.replies = newReplies;
+      newComments.push(comment);
     }
 
     thread.comments = newComments;

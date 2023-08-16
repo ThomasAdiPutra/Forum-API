@@ -97,7 +97,7 @@ describe('CommentRepositoryPostgres', () => {
         .rejects.toThrowError(NotFoundError);
     });
 
-    it('should not throw NotFoundError when username available', async () => {
+    it('should not throw NotFoundError when reply available', async () => {
       // Arrange
       await CommentsTableTestHelper.addComment({}); // memasukan komentar baru
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -128,7 +128,7 @@ describe('CommentRepositoryPostgres', () => {
         .rejects.toThrowError(AuthorizationError);
     });
 
-    it('should not throw AuthorizationError when username available', async () => {
+    it('should not throw AuthorizationError when owner is active user', async () => {
       // Arrange
       await CommentsTableTestHelper.addComment({}); // memasukan komentar baru
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -156,6 +156,25 @@ describe('CommentRepositoryPostgres', () => {
       // Assert
       const tokens = await CommentsTableTestHelper.findCommentById('comment-123');
       expect(tokens.deleted_at).not.toBeNull();
+    });
+  });
+
+  describe('verifyCommentAvailability function', () => {
+    it('should throw NotFoundError when comment not available', async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-123')).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when comment available', async () => {
+      // Arrange
+      await CommentsTableTestHelper.addComment({}); // memasukan komentar baru
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-123')).resolves.not.toThrowError(NotFoundError);
     });
   });
 });

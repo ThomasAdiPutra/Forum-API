@@ -31,7 +31,7 @@ class ThreadsHandler {
     const response = h.response({
       status: 'success',
     });
-    response.code(0);
+    response.code(200);
     return response;
   }
 }

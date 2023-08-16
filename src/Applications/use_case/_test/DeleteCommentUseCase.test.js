@@ -5,8 +5,8 @@ describe('DeleteCommentUseCase', () => {
   it('should throw error when payload did not contain needed property', async () => {
     // Arrange
     const useCasePayload = {
-        id: 'comment-123',
-        thread_id: 'thread-123',
+      id: 'comment-123',
+      thread_id: 'thread-123',
     };
 
     const deleteCommentUseCase = new DeleteCommentUseCase({});
@@ -20,9 +20,9 @@ describe('DeleteCommentUseCase', () => {
   it('should throw error when payload did not meet data type specification', async () => {
     // Arrange
     const useCasePayload = {
-        id: 'comment-123',
-        thread_id: 'thread-123',
-        owner: true,
+      id: 'comment-123',
+      thread_id: 'thread-123',
+      owner: true,
     };
     const deleteCommentUseCase = new DeleteCommentUseCase({});
 
@@ -32,12 +32,12 @@ describe('DeleteCommentUseCase', () => {
       .toThrowError('DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should orchestrating the delete authentication action correctly', async () => {
+  it('should orchestrating the delete comment action correctly', async () => {
     // Arrange
     const useCasePayload = {
-        id: 'comment-123',
-        thread_id: 'thread-123',
-        owner: 'user-123',
+      id: 'comment-123',
+      thread_id: 'thread-123',
+      owner: 'user-123',
     };
 
     const mockCommentRepository = new CommentRepository();
@@ -57,9 +57,9 @@ describe('DeleteCommentUseCase', () => {
 
     // Assert
     expect(mockCommentRepository.verifyInThread)
-      .toHaveBeenCalledWith({id: useCasePayload.id, thread_id: useCasePayload.thread_id});
+      .toHaveBeenCalledWith({ id: useCasePayload.id, thread_id: useCasePayload.thread_id });
     expect(mockCommentRepository.verifyOwner)
-      .toHaveBeenCalledWith({id: useCasePayload.id, owner: useCasePayload.owner});
+      .toHaveBeenCalledWith({ id: useCasePayload.id, owner: useCasePayload.owner });
     expect(mockCommentRepository.softDeleteComment)
       .toHaveBeenCalledWith(useCasePayload.id);
   });
