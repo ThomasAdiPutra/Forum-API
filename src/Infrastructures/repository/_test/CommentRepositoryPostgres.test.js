@@ -66,19 +66,44 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('getCommentsByThreadId', () => {
+  describe('getCommentsByThreadId function', () => {
     it('should return comments correctly', async () => {
       // Arrange
-      await CommentsTableTestHelper.addComment({
+      const expectedComment = await CommentsTableTestHelper.addComment({
         id: 'comment-123', owner: 'user-123', thread_id: 'thread-123', content: 'Dicoding',
       });
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const result = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+      const comment = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
 
       // Assert
-      expect(result).toHaveLength(1);
+      expect(comment).toStrictEqual([expectedComment]);
+    });
+  });
+
+  describe('findCommentById function', () => {
+    it('Should throw NotFoundError when comment is not available', async () => {
+      const id = 'comment-123';
+
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.findCommentById(id))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('Should not throw NotFoundError when comment is available', async () => {
+      await CommentsTableTestHelper.addComment({});
+      const id = 'comment-123';
+
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.findCommentById(id))
+        .resolves.not.toThrowError(NotFoundError);
     });
   });
 

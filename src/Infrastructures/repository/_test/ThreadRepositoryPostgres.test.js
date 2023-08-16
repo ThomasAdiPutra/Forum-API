@@ -74,18 +74,19 @@ describe('ThreadRepositoryPostgres', () => {
         .toThrowError(InvariantError);
     });
 
-    it('should return thread id correctly', async () => {
+    it('should return thread correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({
+      const expectedThread = await ThreadsTableTestHelper.addThread({
         id: 'thread-321', owner: 'user-123', title: 'Dicoding', body: 'Dicoding Indonesia',
       });
+
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action
-      const { id: threadId } = await threadRepositoryPostgres.getThreadById('thread-321');
+      const thread = await threadRepositoryPostgres.getThreadById('thread-321');
 
       // Assert
-      expect(threadId).toEqual('thread-321');
+      expect(thread).toStrictEqual(expectedThread);
     });
   });
 
@@ -98,7 +99,7 @@ describe('ThreadRepositoryPostgres', () => {
       await expect(threadRepositoryPostgres.verifyThreadAvailability('thread-123')).rejects.toThrowError(NotFoundError);
     });
 
-    it('should not throw NotFoundError when username available', async () => {
+    it('should not throw NotFoundError when thread available', async () => {
       // Arrange
       await ThreadsTableTestHelper.addThread({}); // memasukan thread baru
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});

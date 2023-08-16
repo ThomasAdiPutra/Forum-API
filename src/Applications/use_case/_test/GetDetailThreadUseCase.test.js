@@ -12,6 +12,7 @@ describe('GetDetailThreadUseCase', () => {
    * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
    */
   it('should orchestrating the get detail thread action correctly', async () => {
+    const owner = 'user-123';
     const threadId = 'thread-123';
     const commentId = 'comment-123';
 
@@ -51,25 +52,29 @@ describe('GetDetailThreadUseCase', () => {
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
+        owner: 'user-123',
         title: 'Dicoding',
         body: 'Dicoding Indonesia',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
-        username: 'John Doe',
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
+        deleted_at: null,
       }));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'comment-123',
-        username: 'John Doe',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        owner: 'user-123',
         content: 'Dicoding Indonesia',
+        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
         deleted_at: null,
       }]));
     mockReplyRepository.getRepliesByCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'reply-123',
-        username: 'John Doe',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        owner: 'user-123',
         content: 'Dicoding Indonesia',
+        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
         deleted_at: null,
       }]));
     mockUserRepository.getUsernameById = jest.fn()
@@ -95,9 +100,11 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(commentId);
+    expect(mockUserRepository.getUsernameById).toBeCalledWith(owner);
   });
 
   it('should not display comment\'s content when deleted_at contains value', async () => {
+    const owner = 'user-123';
     const threadId = 'thread-123';
     const commentId = 'comment-123';
 
@@ -137,27 +144,31 @@ describe('GetDetailThreadUseCase', () => {
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
         id: 'thread-123',
+        owner: 'user-123',
         title: 'Dicoding',
         body: 'Dicoding Indonesia',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
-        username: 'John Doe',
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
+        deleted_at: null,
       }));
 
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'comment-123',
-        username: 'John Doe',
+        owner: 'user-123',
+        content: 'Dicoding',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
-        content: '**komentar telah dihapus**',
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
         deleted_at: new Date('2023-08-15T12:00:00.000Z'),
       }]));
 
     mockReplyRepository.getRepliesByCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'reply-123',
-        username: 'John Doe',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        owner: 'user-123',
         content: 'Dicoding Indonesia',
+        created_at: new Date('2023-08-15T12:00:00.000Z'),
+        updated_at: new Date('2023-08-15T12:00:00.000Z'),
         deleted_at: new Date('2023-08-15T12:00:00.000Z'),
       }]));
     mockUserRepository.getUsernameById = jest.fn()
@@ -183,5 +194,6 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(commentId);
+    expect(mockUserRepository.getUsernameById).toBeCalledWith(owner);
   });
 });

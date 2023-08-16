@@ -52,5 +52,7 @@ describe('AddCommentUseCase', () => {
       owner: useCasePayload.owner,
       content: useCasePayload.content,
     }));
+
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(useCasePayload.thread_id);
   });
 });
