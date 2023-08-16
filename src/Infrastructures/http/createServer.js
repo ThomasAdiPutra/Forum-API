@@ -36,7 +36,7 @@ const createServer = async (container) => {
       },
     }),
   });
-  
+
   await server.register([
     {
       plugin: users,

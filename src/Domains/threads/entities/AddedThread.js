@@ -2,7 +2,9 @@ class AddedThread {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, owner, title, body } = payload;
+    const {
+      id, owner, title, body,
+    } = payload;
 
     this.id = id;
     this.owner = owner;
@@ -10,7 +12,9 @@ class AddedThread {
     this.body = body;
   }
 
-  _verifyPayload({ id, owner, title, body }) {
+  _verifyPayload({
+    id, owner, title, body,
+  }) {
     if (!id || !owner || !title || !body) {
       throw new Error('ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }

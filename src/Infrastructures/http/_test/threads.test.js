@@ -7,17 +7,14 @@ const createServer = require('../createServer');
 const AuthenticationTokenManager = require('../../../Applications/security/AuthenticationTokenManager');
 
 describe('/threads endpoint', () => {
-  var accessToken;
+  let accessToken;
 
   beforeAll(async () => {
     await UserTableTestHelper.addUser({});
     const user = await UserTableTestHelper.findUsersById('user-123');
-    accessToken = await container.getInstance(AuthenticationTokenManager.name).createAccessToken(user[0]);
+    accessToken = await container.getInstance(AuthenticationTokenManager.name)
+      .createAccessToken(user[0]);
     await AuthenticationsTableTestHelper.addToken(accessToken);
-  });
-
-  beforeEach(async () => {
-    
   });
 
   afterAll(async () => {

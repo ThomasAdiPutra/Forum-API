@@ -13,7 +13,7 @@ class ThreadsHandler {
     const { thread_id } = request.params;
     const owner = request.auth.credentials.id;
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
-    const addedComment = await addCommentUseCase.execute({thread_id, ...request.payload, owner});
+    const addedComment = await addCommentUseCase.execute({ thread_id, ...request.payload, owner });
     const response = h.response({
       status: 'success',
       data: {
@@ -27,7 +27,7 @@ class ThreadsHandler {
   async deleteCommentHandler(request, h) {
     const owner = request.auth.credentials.id;
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    const addedComment = await deleteCommentUseCase.execute({...request.params, owner});
+    await deleteCommentUseCase.execute({ ...request.params, owner });
     const response = h.response({
       status: 'success',
     });

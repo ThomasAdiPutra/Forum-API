@@ -4,10 +4,10 @@ describe('a DetailThread entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = {
-        id: 'thread-123',
-        title: 'Dicoding',
-        body: 'Dicoding Indonesia',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
+      id: 'thread-123',
+      title: 'Dicoding',
+      body: 'Dicoding Indonesia',
+      created_at: new Date('2023-08-15T12:00:00.000Z'),
     };
 
     // Action and Assert
@@ -17,11 +17,11 @@ describe('a DetailThread entities', () => {
   it('should throw error when payload did not meet data type specification', () => {
     // Arrange
     const payload = {
-        id: 'thread-123',
-        title: 'Dicoding',
-        body: 'Dicoding Indonesia',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
-        username: true,
+      id: 'thread-123',
+      title: 'Dicoding',
+      body: 'Dicoding Indonesia',
+      created_at: new Date('2023-08-15T12:00:00.000Z'),
+      username: true,
     };
 
     // Action and Assert
@@ -31,15 +31,17 @@ describe('a DetailThread entities', () => {
   it('should create detailThread object correctly', () => {
     // Arrange
     const payload = {
-        id: 'thread-123',
-        title: 'Dicoding',
-        body: 'Dicoding Indonesia',
-        created_at: new Date('2023-08-15T12:00:00.000Z'),
-        username: 'John Doe',
+      id: 'thread-123',
+      title: 'Dicoding',
+      body: 'Dicoding Indonesia',
+      created_at: new Date('2023-08-15T12:00:00.000Z'),
+      username: 'John Doe',
     };
 
     // Action
-    const { id, title, body, date, username } = new DetailThread(payload);
+    const {
+      id, title, body, date, username,
+    } = new DetailThread(payload);
 
     // Assert
     expect(id).toEqual(payload.id);

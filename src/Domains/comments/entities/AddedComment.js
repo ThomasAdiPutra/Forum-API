@@ -2,7 +2,9 @@ class AddedComment {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, thread_id, owner, content } = payload;
+    const {
+      id, thread_id, owner, content,
+    } = payload;
 
     this.id = id;
     this.threadId = thread_id;
@@ -10,7 +12,9 @@ class AddedComment {
     this.content = content;
   }
 
-  _verifyPayload({ id, thread_id, owner, content }) {
+  _verifyPayload({
+    id, thread_id, owner, content,
+  }) {
     if (!id || !thread_id || !owner || !content) {
       throw new Error('ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }

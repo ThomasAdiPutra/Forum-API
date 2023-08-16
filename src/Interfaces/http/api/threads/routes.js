@@ -13,6 +13,5 @@ const routes = (handler) => ([
     handler: handler.getThreadHandler,
   },
 ]);
-  
+
 module.exports = routes;
-  

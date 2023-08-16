@@ -49,7 +49,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     return result.rows;
   }
 
-  async verifyInThread({id, thread_id}) {
+  async verifyInThread({ id, thread_id }) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1 AND thread_id = $2',
       values: [id, thread_id],
@@ -62,7 +62,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     }
   }
 
-  async verifyOwner({id, owner}) {
+  async verifyOwner({ id, owner }) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1 AND owner = $2',
       values: [id, owner],
@@ -78,7 +78,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   async softDeleteComment(id) {
     const query = {
       text: 'UPDATE comments SET deleted_at = NOW() WHERE id = $1',
-      values: [id]
+      values: [id],
     };
 
     await this._pool.query(query);

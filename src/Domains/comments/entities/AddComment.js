@@ -13,8 +13,8 @@ class AddComment {
     if (!thread_id || !owner || !content) {
       throw new Error('ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
- 
-    if (typeof thread_id !== 'string' || typeof owner !== 'string' ||typeof content !== 'string') {
+
+    if (typeof thread_id !== 'string' || typeof owner !== 'string' || typeof content !== 'string') {
       throw new Error('ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

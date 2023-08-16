@@ -8,13 +8,14 @@ const createServer = require('../createServer');
 const AuthenticationTokenManager = require('../../../Applications/security/AuthenticationTokenManager');
 
 describe('/threads endpoint', () => {
-  let token;
+  let accessToken;
 
   beforeAll(async () => {
     await UserTableTestHelper.addUser({});
-    const user = await UserTableTestHelper.findUsersById('user-123')[0];
-    token = await container.getInstance(AuthenticationTokenManager.name).createAccessToken(user);
-    await AuthenticationsTableTestHelper.addToken(token);
+    const user = await UserTableTestHelper.findUsersById('user-123');
+    accessToken = await container.getInstance(AuthenticationTokenManager.name)
+      .createAccessToken(user[0]);
+    await AuthenticationsTableTestHelper.addToken(accessToken);
     await ThreadsTableTestHelper.addThread({});
   });
 
@@ -48,7 +49,7 @@ describe('/threads endpoint', () => {
         url: '/threads/thread-123/comments',
         payload: requestPayload,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -93,7 +94,7 @@ describe('/threads endpoint', () => {
         url: '/threads/thread-123/comments',
         payload: requestPayload,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -117,7 +118,7 @@ describe('/threads endpoint', () => {
         url: '/threads/thread-123/comments',
         payload: requestPayload,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -141,7 +142,7 @@ describe('/threads endpoint', () => {
         url: '/threads/thread-321/comments',
         payload: requestPayload,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -167,7 +168,7 @@ describe('/threads endpoint', () => {
         method: 'DELETE',
         url: `/threads/thread-123/comments/${id}`,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -203,10 +204,11 @@ describe('/threads endpoint', () => {
       const id = 'comment-123';
       await CommentsTableTestHelper.addComment({});
       await UserTableTestHelper.addUser({ id: 'user-1', username: 'user-1' });
-      const user = await UserTableTestHelper.findUsersById('user-1')[0];
-      token = await container.getInstance(AuthenticationTokenManager.name).createAccessToken(user);
+      const user = await UserTableTestHelper.findUsersById('user-1');
+      accessToken = await container.getInstance(AuthenticationTokenManager.name)
+        .createAccessToken(user[0]);
 
-      await AuthenticationsTableTestHelper.addToken(token);
+      await AuthenticationsTableTestHelper.addToken(accessToken);
       // eslint-disable-next-line no-undef
       const server = await createServer(container);
 
@@ -215,7 +217,7 @@ describe('/threads endpoint', () => {
         method: 'DELETE',
         url: `/threads/thread-123/comments/${id}`,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -239,7 +241,7 @@ describe('/threads endpoint', () => {
         method: 'DELETE',
         url: `/threads/thread-123/comments/${id}`,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 

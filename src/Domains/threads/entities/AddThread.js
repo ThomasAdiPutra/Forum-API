@@ -21,4 +21,3 @@ class AddThread {
 }
 
 module.exports = AddThread;
-  
