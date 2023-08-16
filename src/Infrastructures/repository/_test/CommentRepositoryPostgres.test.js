@@ -72,10 +72,10 @@ describe('CommentRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({
         id: 'comment-123', owner: 'user-123', thread_id: 'thread-123', content: 'Dicoding',
       });
-      const threadRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const result = await threadRepositoryPostgres.getCommentsByThreadId('thread-123');
+      const result = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
 
       // Assert
       expect(result).toHaveLength(1);
