@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/html/forum-api
+            cd /var/www/html/Forum-API
             git pull
             npm install
             npx pm2 restart 0
