@@ -17,11 +17,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+          check-latest: true
 
       - name: Install pm2
         run: |
           npm install -g pm2
           echo "pm2 installed successfully"
+        shell: bash
+
+      - name: Install npx
+        run: npm install -g npx
         shell: bash
 
       - name: SSH and deploy app
@@ -35,4 +40,5 @@ jobs:
             cd /var/www/html/Forum-API
             git pull
             npm install
+            npm run migrate up
             npx pm2 restart 0
