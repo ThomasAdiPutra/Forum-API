@@ -24,9 +24,6 @@ jobs:
           echo "pm2 installed successfully"
         shell: bash
 
-      - name: Install project dependencies
-        run: npm install
-
       - name: SSH and deploy app
         uses: appleboy/ssh-action@master
         with:
