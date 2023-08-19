@@ -95,7 +95,7 @@ describe('CommentRepositoryPostgres', () => {
     });
 
     it('Should not throw NotFoundError when comment is available', async () => {
-      await CommentsTableTestHelper.addComment({});
+      const expectedComment = await CommentsTableTestHelper.addComment({});
       const id = 'comment-123';
 
       // Arrange
@@ -104,6 +104,8 @@ describe('CommentRepositoryPostgres', () => {
       // Action & Assert
       await expect(commentRepositoryPostgres.findCommentById(id))
         .resolves.not.toThrowError(NotFoundError);
+      expect((await commentRepositoryPostgres.findCommentById(id))[0])
+        .toStrictEqual(expectedComment);
     });
   });
 

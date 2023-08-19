@@ -42,8 +42,8 @@ describe('ReplyRepositoryPostgres', () => {
       await replyRepositoryPostgres.addReply(addReply);
 
       // Assert
-      const comment = await CommentsTableTestHelper.findCommentById('comment-123');
-      expect(comment).toHaveLength(1);
+      const reply = await RepliesTableTestHelper.findReplyById('reply-123');
+      expect(reply).toHaveLength(1);
     });
 
     it('should return added comment correctly', async () => {
@@ -69,17 +69,45 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('getRepliesByCommentId', () => {
+  describe('getRepliesByCommentId function', () => {
     it('should return replies correctly', async () => {
       // Arrange
-      await RepliesTableTestHelper.addReply({});
+      const expectedReply = await RepliesTableTestHelper.addReply({});
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action
       const result = await replyRepositoryPostgres.getRepliesByCommentId('comment-123');
 
       // Assert
+      expect(result).toStrictEqual([expectedReply]);
       expect(result).toHaveLength(1);
+    });
+  });
+
+  describe('findReplyById function', () => {
+    it('Should throw NotFoundError when reply is not available', async () => {
+      const id = 'reply-123';
+
+      // Arrange
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(replyRepositoryPostgres.findReplyById(id))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('Should not throw NotFoundError when reply is available', async () => {
+      const expectedReply = await RepliesTableTestHelper.addReply({});
+      const id = 'reply-123';
+
+      // Arrange
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(replyRepositoryPostgres.findReplyById(id))
+        .resolves.not.toThrowError(NotFoundError);
+      expect((await replyRepositoryPostgres.findReplyById(id))[0])
+        .toStrictEqual(expectedReply);
     });
   });
 

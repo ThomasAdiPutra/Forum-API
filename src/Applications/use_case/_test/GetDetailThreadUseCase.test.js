@@ -62,6 +62,7 @@ describe('GetDetailThreadUseCase', () => {
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'comment-123',
+        thread_id: 'thread-123',
         owner: 'user-123',
         content: 'Dicoding Indonesia',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
@@ -71,6 +72,7 @@ describe('GetDetailThreadUseCase', () => {
     mockReplyRepository.getRepliesByCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'reply-123',
+        comment_id: 'comment-123',
         owner: 'user-123',
         content: 'Dicoding Indonesia',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
@@ -155,6 +157,7 @@ describe('GetDetailThreadUseCase', () => {
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'comment-123',
+        thread_id: 'thread-123',
         owner: 'user-123',
         content: 'Dicoding',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
@@ -165,6 +168,7 @@ describe('GetDetailThreadUseCase', () => {
     mockReplyRepository.getRepliesByCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve([{
         id: 'reply-123',
+        comment_id: 'comment-123',
         owner: 'user-123',
         content: 'Dicoding Indonesia',
         created_at: new Date('2023-08-15T12:00:00.000Z'),
