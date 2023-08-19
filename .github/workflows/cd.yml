@@ -25,10 +25,6 @@ jobs:
           echo "pm2 installed successfully"
         shell: bash
 
-      - name: Install npx
-        run: npm install -g npx
-        shell: bash
-
       - name: SSH and deploy app
         uses: appleboy/ssh-action@master
         with:
