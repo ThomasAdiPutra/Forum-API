@@ -9,6 +9,17 @@ jobs:
     runs-on: ubuntu-latest
  
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install pm2
+      run: npm install -g pm2
+
     - name: SSH and deploy app
       uses: appleboy/ssh-action@master
       with:
