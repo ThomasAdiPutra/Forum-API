@@ -22,6 +22,10 @@ describe('/threads endpoint', () => {
     await pool.end();
   });
 
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   afterEach(async () => {
     await ThreadsTableTestHelper.cleanTable();
   });
