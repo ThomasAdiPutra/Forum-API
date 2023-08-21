@@ -7,6 +7,7 @@ describe('a DetailComment entities', () => {
       id: 'comment-123',
       username: 'John Doe',
       created_at: new Date('2023-08-15T12:00:00.000Z'),
+      likeCount: 1,
     };
 
     // Action and Assert
@@ -20,6 +21,7 @@ describe('a DetailComment entities', () => {
       username: 'John Doe',
       created_at: new Date('2023-08-15T12:00:00.000Z'),
       content: true,
+      likeCount: 1,
     };
 
     // Action and Assert
@@ -33,11 +35,12 @@ describe('a DetailComment entities', () => {
       username: 'John Doe',
       created_at: new Date('2023-08-15T12:00:00.000Z'),
       content: 'Dicoding',
+      likeCount: 1,
     };
 
     // Action
     const {
-      id, username, date, content,
+      id, username, date, content, likeCount,
     } = new DetailComment(payload);
 
     // Assert
@@ -45,5 +48,6 @@ describe('a DetailComment entities', () => {
     expect(username).toEqual(payload.username);
     expect(date).toEqual(payload.created_at);
     expect(content).toEqual(payload.content);
+    expect(likeCount).toEqual(payload.likeCount);
   });
 });

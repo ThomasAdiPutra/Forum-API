@@ -6,12 +6,13 @@ const DetailThread = require('../../Domains/threads/entities/DetailThread');
 
 class GetDetailThreadUseCase {
   constructor({
-    threadRepository, commentRepository, replyRepository, userRepository,
+    threadRepository, commentRepository, replyRepository, userRepository, commentLikeRepository,
   }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
     this._userRepository = userRepository;
+    this._commentLikeRepository = commentLikeRepository;
   }
 
   async execute(id) {
@@ -27,6 +28,7 @@ class GetDetailThreadUseCase {
         comment.content = '**komentar telah dihapus**';
       }
       comment.username = await this._userRepository.getUsernameById(comment.owner);
+      comment.likeCount = await this._commentLikeRepository.getLikeCountByCommentId(comment.id);
       comment = new DetailComment(comment);
       const replies = await this._replyRepository.getRepliesByCommentId(comment.id);
       const newReplies = [];

@@ -6,6 +6,7 @@ const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const GetDetailThreadUseCase = require('../GetDetailThreadUseCase');
 const UserRepository = require('../../../Domains/users/UserRepository');
 const DetailReply = require('../../../Domains/replies/entities/DetailReply');
+const CommentLikeRepository = require('../../../Domains/comment_likes/CommentLikeRepository');
 
 describe('GetDetailThreadUseCase', () => {
   /**
@@ -15,6 +16,7 @@ describe('GetDetailThreadUseCase', () => {
     const owner = 'user-123';
     const threadId = 'thread-123';
     const commentId = 'comment-123';
+    const likeCount = 1;
 
     const mockDetailThread = new DetailThread({
       id: 'thread-123',
@@ -30,6 +32,7 @@ describe('GetDetailThreadUseCase', () => {
       created_at: new Date('2023-08-15T12:00:00.000Z'),
       content: 'Dicoding Indonesia',
       deleted_at: null,
+      likeCount: 1,
     })];
 
     const mockDetailReplies = [
@@ -48,6 +51,7 @@ describe('GetDetailThreadUseCase', () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
     const mockUserRepository = new UserRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
@@ -82,12 +86,16 @@ describe('GetDetailThreadUseCase', () => {
     mockUserRepository.getUsernameById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockUsername));
 
+    mockCommentLikeRepository.getLikeCountByCommentId = jest.fn()
+      .mockImplementation(() => Promise.resolve(1));
+
     /** creating use case instance */
     const getThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
       userRepository: mockUserRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     // Action
@@ -95,6 +103,7 @@ describe('GetDetailThreadUseCase', () => {
 
     const comments = mockDetailComment;
     comments[0].replies = mockDetailReplies;
+    comments[0].likeCount = likeCount;
 
     // Assert
     expect(detailThread).toStrictEqual({ ...mockDetailThread, comments });
@@ -103,12 +112,14 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(commentId);
     expect(mockUserRepository.getUsernameById).toBeCalledWith(owner);
+    expect(mockCommentLikeRepository.getLikeCountByCommentId).toBeCalledWith(commentId);
   });
 
   it('should not display comment\'s content when deleted_at contains value', async () => {
     const owner = 'user-123';
     const threadId = 'thread-123';
     const commentId = 'comment-123';
+    const likeCount = 1;
 
     const mockDetailThread = new DetailThread({
       id: 'thread-123',
@@ -124,6 +135,7 @@ describe('GetDetailThreadUseCase', () => {
       created_at: new Date('2023-08-15T12:00:00.000Z'),
       content: '**komentar telah dihapus**',
       deleted_at: new Date('2023-08-15T12:00:00.000Z'),
+      likeCount: 1,
     })];
 
     const mockDetailReplies = [
@@ -142,6 +154,7 @@ describe('GetDetailThreadUseCase', () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
     const mockUserRepository = new UserRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve({
@@ -178,20 +191,24 @@ describe('GetDetailThreadUseCase', () => {
     mockUserRepository.getUsernameById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockUsername));
 
+    mockCommentLikeRepository.getLikeCountByCommentId = jest.fn()
+      .mockImplementation(() => Promise.resolve(1));
+
     /** creating use case instance */
     const getThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
       userRepository: mockUserRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     const comments = mockDetailComment;
     comments[0].replies = mockDetailReplies;
+    comments[0].likeCount = likeCount;
 
     // Action
     const detailThread = await getThreadUseCase.execute(threadId);
-
     // Assert
     expect(detailThread).toStrictEqual({ ...mockDetailThread, comments });
 
@@ -199,5 +216,6 @@ describe('GetDetailThreadUseCase', () => {
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(commentId);
     expect(mockUserRepository.getUsernameById).toBeCalledWith(owner);
+    expect(mockCommentLikeRepository.getLikeCountByCommentId).toBeCalledWith(commentId);
   });
 });
