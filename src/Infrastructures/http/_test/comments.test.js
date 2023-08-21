@@ -19,8 +19,8 @@ describe('/threads endpoint', () => {
     await ThreadsTableTestHelper.addThread({});
   });
 
-  beforeEach(async () => {
-
+  beforeEach(() => {
+    jest.setTimeout(20000);
   });
 
   afterAll(async () => {

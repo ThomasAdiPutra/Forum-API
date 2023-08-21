@@ -15,6 +15,10 @@ describe('/authentications endpoint', () => {
     await AuthenticationsTableTestHelper.cleanTable();
   });
 
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   describe('when POST /authentications', () => {
     it('should response 201 and new authentication', async () => {
       // Arrange

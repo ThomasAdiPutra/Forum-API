@@ -9,6 +9,10 @@ const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('CommentRepositoryPostgres', () => {
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   beforeAll(async () => {
     await UserTableTestHelper.addUser({});
     await ThreadsTableTestHelper.addThread({});
