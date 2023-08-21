@@ -1,7 +1,7 @@
 const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
 const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
 
-class ThreadsHandler {
+class RepliesHandler {
   constructor(container) {
     this._container = container;
 
@@ -37,4 +37,4 @@ class ThreadsHandler {
   }
 }
 
-module.exports = ThreadsHandler;
+module.exports = RepliesHandler;
