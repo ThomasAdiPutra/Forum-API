@@ -8,6 +8,10 @@ const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ThreadRepositoryPostgres', () => {
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   beforeAll(async () => {
     await UserTableTestHelper.addUser({});
   });

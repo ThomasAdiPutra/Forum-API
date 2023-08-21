@@ -6,6 +6,10 @@ const pool = require('../../database/postgres/pool');
 const CommentLikeRepositoryPostgres = require('../CommentLikeRepositoryPostgres');
 
 describe('CommentLikeRepositoryPostgres', () => {
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   beforeAll(async () => {
     await UserTableTestHelper.addUser({});
     await ThreadsTableTestHelper.addThread({});

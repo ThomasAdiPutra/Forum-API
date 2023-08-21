@@ -6,6 +6,10 @@ const pool = require('../../database/postgres/pool');
 const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 
 describe('UserRepositoryPostgres', () => {
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
   });

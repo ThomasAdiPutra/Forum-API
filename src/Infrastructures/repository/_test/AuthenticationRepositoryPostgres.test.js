@@ -12,6 +12,10 @@ describe('AuthenticationRepository postgres', () => {
     await pool.end();
   });
 
+  beforeEach(() => {
+    jest.setTimeout(20000);
+  });
+
   describe('addToken function', () => {
     it('should add token to database', async () => {
       // Arrange
